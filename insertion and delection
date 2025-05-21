@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <string.h>
+int main() 
+{
+    struct employee_info 
+    {
+        int employee_id;
+        char name[50];
+        float salary;
+    };
+
+    int n = 10;
+    struct employee_info employees[n];
+
+    printf("ENTER THE NUM OF INPUTS \n");
+    scanf("%d", &n);
+    printf("ENTER THE DATA\n");
+    int i;
+    for (i = 0; i < n; i++) 
+    {
+        printf("ENTER YOUR EMPLOYEE ID=\n");
+        scanf("%d", &employees[i].employee_id);
+        printf("ENTER YOUR NAME \n");
+        getchar();
+        scanf("%[^\n]", employees[i].name);
+        printf("ENTER YOUR SALARY\n");
+        scanf("%f", &employees[i].salary);
+    }
+
+    printf("YOUR DATA IS\n");
+    for (i = 0; i < n; i++) 
+    {
+        printf("Employee ID: %d\n", employees[i].employee_id);
+        printf("Name: %s\n", employees[i].name);
+        printf("Salary: %.2f\n", employees[i].salary);
+    }
+
+    int operation;
+    printf("Enter which operation you want to perform from the following \nInsertion = 1\nDeletion = 2\nDisplay = 3\n");
+    scanf("%d", &operation);
+    switch (operation) 
+    {
+        case 1: 
+        {
+            int position;
+            printf("At which position do you want to insert?\n");
+            scanf("%d", &position);
+            for (i = n; i >= position; i--) 
+            {
+                employees[i] = employees[i - 1];
+            }
+
+            printf("ENTER YOUR EMPLOYEE ID =\n");
+            scanf("%d", &employees[position].employee_id);
+            printf("ENTER YOUR NAME =\n");
+            getchar();
+            scanf("%[^\n]", employees[position].name);
+            printf("ENTER YOUR SALARY =\n");
+            scanf("%f", &employees[position].salary);
+            n++;
+            printf("YOUR DATA AFTER INSERTION IS:\n");
+            for (i = 0; i < n; i++) 
+            {
+                printf("%d)\n", i);
+                printf("Employee ID: %d\n", employees[i].employee_id);
+                printf("Name: %s\n", employees[i].name);
+                printf("Salary: %.2f\n", employees[i].salary);
+            }
+            break;
+        }
+        case 2: 
+        {
+            int position;
+            printf("AT WHICH POSITION DO YOU WANT TO DELETE?\n");
+            scanf("%d", &position);
+            for (i = position; i < n - 1; i++) 
+            {
+                employees[i] = employees[i + 1];
+            }
+            n--;
+
+            printf("YOUR DATA AFTER DELETION IS:\n");
+            for (i = 0; i < n; i++) 
+            {
+                printf("%d)\n", i);
+                printf("Employee ID: %d\n", employees[i].employee_id);
+                printf("Name: %s\n", employees[i].name);
+                printf("Salary: %.2f\n", employees[i].salary);
+            }
+            break;
+        }
+        case 3: 
+        {
+         for (i = 0; i < n; i++) 
+            {
+                printf("%d)\n", i);
+                printf("Employee ID: %d\n", employees[i].employee_id);
+                printf("Name: %s\n", employees[i].name);
+                printf("Salary: %.2f\n", employees[i].salary);
+            }
+            break;
+        }
+        default:
+            printf("Invalid operation!\n");
+            break;
+    }
+    return 0;
+}
