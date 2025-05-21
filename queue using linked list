@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main() 
+{
+    struct Node 
+    {
+        int val;
+        struct Node* next;
+    };
+    struct Node *f = NULL, *r = NULL, *n, *t;
+    int ch, x;
+    while (1) 
+    {
+        printf("\nMenu:\n 1. Enqueue\n 2. Dequeue\n 3. Display\n 4. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &ch);
+        if (ch == 1) 
+        {
+            printf("Enter value: ");
+            scanf("%d", &x);
+            n = (struct Node*)malloc(sizeof(struct Node));
+            if (n == NULL) 
+            {
+                printf("Allocation failed\n");
+                continue;
+            }
+            n->val = x;
+            n->next = NULL;
+            if (f == NULL && r == NULL) {
+                f = r = n;
+            } 
+            else 
+            {
+                r->next = n;
+                r = n;
+            }
+        }
+        else if (ch == 2) 
+        {
+            if (f == NULL) 
+            {
+                printf("Empty\n");
+            } 
+            else 
+            {
+                t = f;
+                f = f->next;
+                printf("Dequeued: %d\n", t->val);
+                free(t);
+                if (f == NULL) 
+                {
+                    r = NULL;
+                }
+            }
+        }
+        else if (ch == 3) 
+        {
+            if (f == NULL) 
+            {
+                printf("Empty\n");
+            } 
+            else 
+            {
+                t = f;
+                printf("Queue: ");
+                while (t != NULL) 
+                {
+                    printf("%d -> ", t->val);
+                    t = t->next;
+                }
+                printf("NULL\n");
+            }
+        }
+        else if (ch == 4) {
+            while (f != NULL) {
+                t = f;
+                f = f->next;
+                free(t);
+            }
+            printf("Exit\n");
+            break;
+        }
+        else 
+        {
+            printf("Invalid\n");
+        }
+    }
+    return 0;
+}
