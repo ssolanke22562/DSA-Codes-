@@ -1,0 +1,225 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main() 
+{
+    struct Node 
+    {
+        int val;
+        struct Node* prev;
+        struct Node* next;
+    };
+    struct Node* start = NULL;
+    int ch, x, pos;
+    do 
+    {
+        printf("\n1. Insert First\n2. Insert Last\n3. Delete First\n4. Delete Last\n");
+        printf("5. Display\n6. Insert Pos\n7. Delete Pos\n8. Exit\nChoice: ");
+        scanf("%d", &ch);
+        if (ch == 1) 
+        {
+            printf("Enter value: ");
+            scanf("%d", &x);
+            struct Node* n = (struct Node*)malloc(sizeof(struct Node));
+            if (n == NULL) 
+            {
+                printf("Allocation failed.\n");
+                continue;
+            }
+            n->val = x;
+            n->prev = NULL;
+            n->next = start;
+            if (start != NULL)
+                start->prev = n;
+            start = n;
+        }
+        else if (ch == 2) 
+        {
+            printf("Enter value: ");
+            scanf("%d", &x);
+            struct Node* n = (struct Node*)malloc(sizeof(struct Node));
+            if (n == NULL) 
+            {
+                printf("Allocation failed.\n");
+                continue;
+            }
+            n->val = x;
+            n->next = NULL;
+            if (start == NULL) 
+            {
+                n->prev = NULL;
+                start = n;
+            } 
+            else 
+            {
+                struct Node* t = start;
+                while (t->next != NULL)
+                    t = t->next;
+                t->next = n;
+                n->prev = t;
+            }
+        }
+        else if (ch == 3) {
+            if (start == NULL) 
+            {
+                printf("Empty list.\n");
+            } else 
+            {
+                struct Node* t = start;
+                start = start->next;
+                if (start != NULL)
+                    start->prev = NULL;
+                free(t);
+                printf("First deleted.\n");
+            }
+        }
+        else if (ch == 4) 
+        {
+            if (start == NULL) 
+            {
+                printf("Empty list.\n");
+            } 
+            else if (start->next == NULL) 
+            {
+                free(start);
+                start = NULL;
+                printf("Last deleted.\n");
+            } 
+            else 
+            {
+                struct Node* t = start;
+                while (t->next != NULL)
+                    t = t->next;
+                t->prev->next = NULL;
+                free(t);
+                printf("Last deleted.\n");
+            }
+        }
+        else if (ch == 5) 
+        {
+            struct Node* t = start;
+            int i = 1;
+            if (start == NULL) 
+            {
+                printf("Empty list.\n");
+            } 
+            else 
+            {
+                printf("\nList:\n");
+                while (t != NULL) 
+                {
+                    printf("Node %d: Val = %d, Addr = %p, Prev = %p, Next = %p\n",
+                           i, t->val, (void*)t, (void*)t->prev, (void*)t->next);
+                    t = t->next;
+                    i++;
+                }
+            }
+        }
+        else if (ch == 6) 
+        {
+            printf("Enter position: ");
+            scanf("%d", &pos);
+            printf("Enter value: ");
+            scanf("%d", &x);
+            if (pos < 1) 
+            {
+                printf("Invalid position.\n");
+                continue;
+            }
+            struct Node* n = (struct Node*)malloc(sizeof(struct Node));
+            if (n == NULL) 
+            {
+                printf("Allocation failed.\n");
+                continue;
+            }
+            n->val = x;
+            if (pos == 1) {
+                n->prev = NULL;
+                n->next = start;
+                if (start != NULL)
+                    start->prev = n;
+                start = n;
+            } 
+            else 
+            {
+                struct Node* t = start;
+                int i;
+                for (i = 1; t != NULL && i < pos - 1; i++) 
+                {
+                    t = t->next;
+                }
+                if (t == NULL) 
+                {
+                    printf("Out of bounds.\n");
+                    free(n);
+                    continue;
+                }
+                n->next = t->next;
+                n->prev = t;
+                if (t->next != NULL)
+                    t->next->prev = n;
+                t->next = n;
+            }
+        }
+        else if (ch == 7) 
+        {
+            printf("Enter position: ");
+            scanf("%d", &pos);
+            if (start == NULL) 
+            {
+                printf("Empty list.\n");
+                continue;
+            }
+            if (pos < 1) 
+            {
+                printf("Invalid position.\n");
+                continue;
+            }
+            if (pos == 1) 
+            {
+                struct Node* t = start;
+                start = start->next;
+                if (start != NULL)
+                    start->prev = NULL;
+                free(t);
+                printf("Deleted at 1.\n");
+            } 
+            else 
+            {
+                struct Node* t = start;
+                int i;
+                for (i = 1; t != NULL && i < pos; i++) 
+                {
+                    t = t->next;
+                }
+                if (t == NULL) 
+                {
+                    printf("Out of bounds.\n");
+                    continue;
+                }
+                if (t->prev != NULL)
+                    t->prev->next = t->next;
+                if (t->next != NULL)
+                    t->next->prev = t->prev;
+                free(t);
+                printf("Deleted at %d.\n", pos);
+            }
+        }
+        else if (ch == 8) 
+        {
+            struct Node* t = start;
+            while (t != NULL) 
+            {
+                struct Node* nxt = t->next;
+                free(t);
+                t = nxt;
+            }
+            printf("Exit.\n");
+        }
+        else 
+        {
+            printf("Invalid choice.\n");
+        }
+    } 
+    while (ch != 8);
+    return 0;
+}
